@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Aunty Evelyn 💖</title>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Comic Sans MS', cursive;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 1.2s;
+  text-align: center;
+  color: #ff4d88;
+  background: linear-gradient(to bottom, #ffd6e7, #fff0f5);
+}
+.active { opacity: 1; }
+
+.big {
+  font-size: 4em;
+  animation: pop 1s infinite alternate;
+}
+@keyframes pop {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+.photo-box {
+  width: 220px;
+  height: 220px;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-top: 20px;
+  border: 5px solid white;
+  box-shadow: 0 0 25px pink;
+}
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 1s;
+}
+
+/* Confetti */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: pink;
+  top: -10px;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  to { transform: translateY(100vh); }
+}
+
+/* Love */
+.love {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: rise 5s linear infinite;
+}
+@keyframes rise {
+  to { transform: translateY(-100vh); }
+}
+</style>
+
+</head>
+<body>
+
+<!-- 🎶 MUSIK -->
+<audio id="music" loop>
+  <source src="lagu.mp3" type="audio/mp3">
+</audio>
+
+<!-- 🎤 SUARA UCAPAN -->
+<audio id="voice">
+  <source src="suara.mp3" type="audio/mp3">
+</audio>
+
+<!-- 🔥 IZIN AUDIO -->
+<script>
+document.body.addEventListener("click", function () {
+  let music = document.getElementById("music");
+  let voice = document.getElementById("voice");
+
+  music.play().catch(()=>{});
+
+  // izin untuk voice
+  voice.play().then(()=>{
+    voice.pause();
+    voice.currentTime = 0;
+  }).catch(()=>{});
+
+}, { once: true });
+</script>
+
+<!-- Confetti -->
+<script>
+for(let i=0;i<60;i++){
+  let c = document.createElement("div");
+  c.className = "confetti";
+  c.style.left = Math.random()*100+"vw";
+  c.style.animationDuration = (Math.random()*3+2)+"s";
+  document.body.appendChild(c);
+}
+</script>
+
+<!-- Love -->
+<script>
+setInterval(()=>{
+  let l = document.createElement("div");
+  l.className = "love";
+  l.innerText = "💖";
+  l.style.left = Math.random()*100+"vw";
+  document.body.appendChild(l);
+  setTimeout(()=> l.remove(),5000);
+},300);
+</script>
+
+<!-- Slide 1 -->
+<div class="slide active">
+  <h1>💖 Untuk Aunty Evelyn 💖</h1>
+  <div class="big" id="countdown">3</div>
+  <p>Klik layar ya 🎶</p>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide">
+  <h1 class="big">🎉 Selamat Ulang Tahun 🎉</h1>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide">
+  <h1 class="big">🌸 Panjang Umur 🌸</h1>
+</div>
+
+<!-- Slide 4 -->
+<div class="slide">
+  <h1 class="big">🙏 Sehat Selalu 🙏</h1>
+  <h2>Tuhan Berkati ✨</h2>
+</div>
+
+<!-- Slide 5 -->
+<div class="slide">
+  <h1>🎂 Happy Birthday 💖</h1>
+  <h2>Aunty Evelyn 💕</h2>
+
+  <div class="photo-box">
+    <img id="photo" src="foto1.jpg">
+  </div>
+
+  <p style="max-width:600px;">
+    Hari ini adalah hari spesial 💕  
+    Semoga panjang umur, sehat selalu, dan penuh berkat 🙏✨  
+    Tetap jadi pribadi yang manis dan penuh kasih 🌸  
+    <br><br>
+    💝 Dari Leyyy dengan penuh kasih 💝
+  </p>
+</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let current = 0;
+let voicePlayed = false; // 🔥 biar cuma sekali
+
+/* Countdown */
+let count = 3;
+let el = document.getElementById("countdown");
+
+let c = setInterval(()=>{
+  count--;
+  if(count>0){
+    el.innerText = count;
+  } else {
+    el.innerText = "🎉";
+    clearInterval(c);
+    setTimeout(startSlides,1000);
+  }
+},1000);
+
+/* Slide + suara */
+function startSlides(){
+  setInterval(()=>{
+    slides[current].classList.remove("active");
+    current++;
+    if(current >= slides.length) current = slides.length - 1;
+    slides[current].classList.add("active");
+
+    // 🔥 SUARA HANYA SEKALI
+    if(current === 4 && !voicePlayed){
+      let voice = document.getElementById("voice");
+      voice.currentTime = 0;
+      voice.play().catch(()=>{});
+      voicePlayed = true;
+    }
+
+  },2000);
+}
+
+/* FOTO 7 DETIK */
+let photos = ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"];
+let index = 0;
+let photoEl = document.getElementById("photo");
+
+setInterval(()=>{
+  index = (index + 1) % photos.length;
+  photoEl.style.opacity = 0;
+  setTimeout(()=>{
+    photoEl.src = photos[index];
+    photoEl.style.opacity = 1;
+  },500);
+},7000);
+</script>
+
+</body>
+</html>
